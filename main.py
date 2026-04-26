@@ -64,3 +64,53 @@ tester_agent = create_agent(
     Your mindset is to write test cases that cover all possible scenarios and edge cases, and to execute the code to find out if it is working or not.
     """
 )
+
+
+@tool
+def planner_tool(problem_statement: str) -> str:
+    """Use this tool to break down the problem into smaller, manageable tasks and to create a clear plan for solving the problem.
+    
+    Args:
+        problem_statement (str): The problem statement to be solved.
+    """
+    print("Planner tool invoked with problem statement:", problem_statement)
+    response = planner_agent.invoke({
+        "messages": [
+            HumanMessage(problem_statement)
+        ]
+    })
+    
+    return response['messages'][-1].content
+
+@tool
+def coder_tool(task: str) -> str:
+    """Use this tool to write python code for the given task.
+    
+    Args:
+        task (str): The task for which the code needs to be written.
+    """
+    print("Coder tool invoked with task:", task)
+    response = coder_agent.invoke({
+        "messages": [
+            HumanMessage(task)
+        ]
+    })
+    
+    return response['messages'][-1].content
+
+
+@tool
+def tester_tool(code: str) -> str:
+    """Use this tool to execute the code and find out if it is working or not.
+    
+    Args:
+        code (str): The python code to be executed.
+    """
+    print("Tester tool invoked with code:", code)
+    response = tester_agent.invoke({
+        "messages": [
+            HumanMessage(code)
+        ]
+    })
+    
+    return response['messages'][-1].content
