@@ -36,7 +36,23 @@ planner_agent = create_agent(
 
 @tool
 def execute_code(code: str) -> str:
-    pass
+    """"Use this tool to execute python code and find out the code is working or not.
+    
+    Args:
+        code (str): The python code to be executed.
+    """
+
+    result = subprocess.run(
+        [sys.executable, "-c", code], 
+        capture_output=True, 
+        text=True,
+        timeout=30
+    )
+    return str({
+        "stdout": result.stdout,
+        "stderr": result.stderr,
+        "returncode": result.returncode
+    })
 
 
 tester_agent = create_agent(
