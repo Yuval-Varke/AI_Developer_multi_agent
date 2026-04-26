@@ -114,3 +114,23 @@ def tester_tool(code: str) -> str:
     })
     
     return response['messages'][-1].content
+
+
+
+team_lead_agent = create_agent(
+    model=model,
+    tools=[planner_tool, coder_tool, tester_tool],
+    system_prompt="""
+    You are an experienced software team lead.
+    You have a good understanding of software development lifecycle, project management, software architecture, software development and software testing.
+    Your mindset is to break down complex problems into smaller, manageable tasks and to create a clear plan for solving the problem, to write code with proper understanding of the problem and to execute the code to find out if it is working or not.
+    """
+)
+
+response = team_lead_agent.invoke({
+    "messages": [
+        HumanMessage("Write a function to find a factorial of a number.")
+    ]
+})
+
+print(f"Final response from team lead agent:\n{response['messages'][-1].content}")
